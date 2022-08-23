@@ -1,0 +1,28 @@
+.header {
+    position: sticky;
+    width: 100%;
+    top: 0;
+    display: flex;
+    justify-content: space-between;
+    background-color: crimson;
+    padding: 0.5rem 1rem 0.5rem 1rem;
+    box-shadow: 0 1px 6px 0 rgb(0 0 0 / 20%);
+    z-index: 99;
+}
+
+
+.header > a {
+    color: white !important;
+    font-weight: bolder;
+    font-size: 2em;
+}
+
+.header > a:hover {
+    text-decoration: none;
+}
+
+@media screen and (min-width: 1200px) {
+    .header span {
+        display: none;
+    }
+}
