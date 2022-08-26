@@ -1,0 +1,48 @@
+.formContainer {
+    width: 80vw;
+    margin: 0 10vw 0 10vw;
+}
+
+.inputGroup{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    border: none;
+    margin-bottom: 4em;
+}
+
+.customField input:disabled, .customField select:disabled{
+    background: #e0e0e0;
+}
+
+.customField input, .customField select{
+    border: none;
+    -webkit-appearance: none;
+    -ms-appearance: none;
+    -moz-appearance: none;
+    background: #eeeeee;
+    transition: background 0.3s ease;
+    padding: 12px;
+    border-radius: 3px;
+    width: 80vw;
+    outline: none;
+    display: flex;
+    flex-direction: column;
+    flex: 1 1;
+    font-size: 1em;
+    font-family: 'Nunito', sans-serif;
+}
+
+
+.customField input:focus {
+    background: #e3e3e3;
+}
+
+.customField input::placeholder {
+    color: #222;
+    transition: color 0.3s ease;
+}
+
+.customField input:focus::placeholder {
+    color: transparent;
+}
