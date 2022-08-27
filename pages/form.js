@@ -4,10 +4,11 @@ import React, {useState} from "react";
 
 export default function form() {
     const [isLoading, setIsLoading] = useState(false)
-    const form = React.createElement(RezeptForm)
+    const form = React.createElement(DrugsPrescriptionForm)
     const [forms, setForms] = useState([form])
-
-    //const forms = [form]
+    const [prescription, setPrescription] = useState(defaultModel)
+    const [errors, setErrors] = useState({})
+    const [drugsPrescription, setDrugPrescriptions] = useState()
 
     const addForm = async (e) => {
         setForms(forms.concat   (form))
@@ -21,7 +22,7 @@ export default function form() {
         }
     }
 
-    const handleChange = async (e) => {
+    const handleChange = (e) => {
 
     }
 
@@ -30,28 +31,55 @@ export default function form() {
             <form>
                 <fieldset className={styles.inputGroup}>
                     <label className={styles.customField}>
-                        <span>Firstname</span>
-                        <input type="text" name="id" onChange={handleChange}/>
+                        <span>FirstName</span>{errors.firstName && <span className={styles.error}>{errors.firstName}</span>}
+                        <input type="text" name="firstName" onChange={handleChange} value={prescription.firstName}/>
                     </label>
 
                     <label className={styles.customField}>
-                        <span>Lastname</span>
-                        <input type="text" name="name" onChange={handleChange}/>
+                        <span>Lastname</span>{errors.lastName && <span className={styles.error}>{errors.lastName}</span>}
+                        <input type="text" name="lastName" onChange={handleChange} required={true}/>
                     </label>
 
                     <label className={styles.customField}>
-                        <span>ZSR</span>
-                        <input type="number" name="name" onChange={handleChange}/>
+                        <span>ZSR</span>{errors.ZSR && <span className={styles.error}>{errors.ZSR}</span>}
+                        <input type="number" name="ZSR" onChange={handleChange} required={true}/>
                     </label>
 
                     <label className={styles.customField}>
-                        <span>Date</span>
-                        <input type="date" name="name" onChange={handleChange}/>
+                        <span>Date</span>{errors.prescriptionDate && <span className={styles.error}>{errors.prescriptionDate}</span>}
+                        <input type="date" name="prescriptionDate" onChange={handleChange} required={true}/>
                     </label>
 
                     <label className={styles.customField}>
                         <span>HINAddress</span>
                         <input type="text" name="name" onChange={handleChange}/>
+                    </label>
+                </fieldset>
+
+                <fieldset className={styles.inputGroup}>
+                    <label className={styles.customField}>
+                        <span>Patient Firstname</span>{errors.patientFirstName && <span className={styles.error}>{errors.patientFirstName}</span>}
+                        <input type="text" name="patientFirstName" onChange={handleChange} required={true}/>
+                    </label>
+
+                    <label className={styles.customField}>
+                        <span>Patient Lastname</span>{errors.patientLastName && <span className={styles.error}>{errors.patientLastName}</span>}
+                        <input type="text" name="patientLastName" onChange={handleChange} required={true}/>
+                    </label>
+
+                    <label className={styles.customField}>
+                        <span>Birthdate</span>{errors.birthdate && <span className={styles.error}>{errors.birthdate}</span>}
+                        <input type="date" name="birthdate" onChange={handleChange} required={true}/>
+                    </label>
+
+                    <label className={styles.customField}>
+                        <span>AHV-Nr.</span>{errors.AHV && <span className={styles.error}>{errors.AHV}</span>}
+                        <input type="text" name="AHV" onChange={handleChange} required={true}/>
+                    </label>
+
+                    <label className={styles.customField}>
+                        <span>number of uses</span>{errors.numberOfUses && <span className={styles.error}>{errors.numberOfUses}</span>}
+                        <input type="number" name="numberOfUses" onChange={handleChange}/>
                     </label>
                 </fieldset>
 
