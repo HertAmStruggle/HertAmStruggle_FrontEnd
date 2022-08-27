@@ -27,7 +27,7 @@ const defaultDrugPrescription = {
 
 const errors = {}
 
-function validateModel(prescription, e) {
+function validateModel(prescription) {
     let isValid = true
 
     if (prescription.firstName.trim().length === 0) {
