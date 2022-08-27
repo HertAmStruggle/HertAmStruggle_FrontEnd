@@ -1,6 +1,83 @@
-import RezeptForm from "../components/RezeptForm";
-import styles from "../components/RezeptForm.module.css";
+import DrugsPrescriptionForm from "../components/DrugsPrescriptionForm";
+import styles from "./form.module.css";
 import React, {useState} from "react";
+
+const defaultModel = {
+    "firstName": "",
+    "lastName": "",
+    "ZSR": 0,
+    "email": "",
+    "prescriptionDate": "",
+    "patientFirstName": "",
+    "patientLastName": "",
+    "birthdate": "",
+    "AHV": "",
+    "numberOfUses": 0,
+    "drugsPrescription": [],
+}
+
+const errors = {}
+
+function validateModel(prescription) {
+    let isValid = true
+
+    if (prescription.firstName.trim().length === 0) {
+        errors.firstName = "Firstname can't be empty!"
+        isValid = false
+    }
+
+    if (prescription.lastName.trim().length === 0) {
+        errors.lastName = "Lastname can't be empty!"
+        isValid = false
+    }
+
+    if (prescription.ZSR < 1) {
+        errors.ZSR = "ZSR is not valid!"
+        isValid = false
+    }
+
+    if (!isRegexValid(prescription.email.trim(), "\\S+@(hin|HIN)\\.\\S+")) {
+        errors.email = "Invalid HIN address format!"
+        isValid = false;
+    } else { errors.email = null }
+
+    if (prescription.prescriptionDate.trim().length === 0) {
+        errors.prescriptionDate = "Date of the prescription can't be empty!"
+        isValid = false;
+    }
+
+    if (prescription.patientFirstName.trim().length === 0) {
+        errors.patientFirstName = "The firstname of the patient can't be empty!"
+        isValid = false;
+    }
+
+    if (prescription.patientLastName.trim().length === 0) {
+        errors.patientLastName = "The lastname of the patient can't be empty!"
+        isValid = false;
+    }
+
+    if (prescription.birthdate.trim().length === 0) {
+        errors.birthdate = "The birthdate can't be empty!"
+        isValid = false;
+    }
+
+    if (isRegexValid(prescription.AHV.trim(), "756.\\d{4}.\\d{4}.\\d{2}")) {
+        errors.AHV = "Invalid AHV format!"
+        isValid = false;
+    } else { errors.AHV = null }
+
+    if (prescription.numberOfUses < 1) {
+        errors.numberOfUses = "number of uses must be positive!"
+        isValid = false;
+    }
+
+    console.log(errors.email)
+    return {errors, isValid}
+}
+
+function isRegexValid(string, regex) {
+    return string.match(regex)
+}
 
 export default function form() {
     const [isLoading, setIsLoading] = useState(false)
@@ -24,11 +101,101 @@ export default function form() {
 
     const handleChange = (e) => {
 
+        const name = e.target.name
+        const value = e.target.value
+
+        if (name === "drugsPrescription") {
+            setDrugPrescriptions({
+                ...prescription,
+                drugsPrescription: [
+                    {
+                        "id": (value)
+                    }
+                ]
+            })
+        } else if (name === "firstName") {
+            setPrescription({
+                ...prescription,
+                firstName: value
+            })
+        } else if (name === "lastName") {
+            setPrescription({
+                ...prescription,
+                lastNameName: value
+            })
+        } else if (name === "ZSR") {
+            setPrescription({
+                ...prescription,
+                ZSR: value
+            })
+        } else if (name === "date") {
+            setPrescription({
+                ...prescription,
+                date: value
+            })
+        } else if (name === "email") {
+            setPrescription({
+                ...prescription,
+                email: value
+            })
+        } else if (name === "patientFirstName") {
+            setPrescription({
+                ...prescription,
+                patientFirstName: value
+            })
+        } else if (name === "patientLastName") {
+            setPrescription({
+                ...prescription,
+                patientLastName: value
+            })
+        } else if (name === "birthdate") {
+            setPrescription({
+                ...prescription,
+                birthdate: value
+            })
+        } else if (name === "AHV") {
+            setPrescription({
+                ...prescription,
+                AHV: value
+            })
+        } else if (name === "numberOfUses") {
+            setPrescription({
+                ...prescription,
+                numberOfUses: value
+            })
+        } else {
+            setPrescription({
+                ...prescription,
+                [name]: value
+            })
+        }
+
+        const result = validateModel(prescription);
+        if(!result.isValid) {
+            setErrors(result.errors);
+        }
+
     }
+
+    const handleSubmit = async (e) => {
+        e.preventDefault()
+        setIsLoading(true)
+
+        const result = validateModel(prescription)
+
+        if (!result.isValid) {
+            setErrors(result.errors)
+            setIsLoading(false)
+            return
+        }
+        setIsLoading(false)
+    }
+
+    console.log(forms);
 
     return (
         <>
-            <form>
+            <form name="contactForm" onSubmit={handleSubmit}>
                 <fieldset className={styles.inputGroup}>
                     <label className={styles.customField}>
                         <span>FirstName</span>{errors.firstName && <span className={styles.error}>{errors.firstName}</span>}
@@ -51,8 +218,8 @@ export default function form() {
                     </label>
 
                     <label className={styles.customField}>
-                        <span>HINAddress</span>
-                        <input type="text" name="name" onChange={handleChange}/>
+                        <span>HIN address</span>{errors.email && <span className={styles.error}>{errors.email}</span>}
+                        <input type="text" name="email" onChange={handleChange} value={prescription.email}/>
                     </label>
                 </fieldset>
 
