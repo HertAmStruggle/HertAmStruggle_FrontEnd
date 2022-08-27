@@ -5,15 +5,24 @@ import React, {useState} from "react";
 const defaultModel = {
     "firstName": "",
     "lastName": "",
-    "ZSR": 0,
-    "email": "",
+    "zsrCode": 0,
+    "hinEmailAddress": "",
     "prescriptionDate": "",
     "patientFirstName": "",
     "patientLastName": "",
     "birthdate": "",
     "AHV": "",
     "numberOfUses": 0,
-    "drugsPrescription": [],
+    "drugPrescriptions": [],
+}
+
+const defaultDrugPrescription = {
+    "atcCode": "",
+    "morning": "",
+    "noon": "",
+    "evening": "",
+    "night": "",
+    "other": "",
 }
 
 const errors = {}
@@ -31,15 +40,15 @@ function validateModel(prescription) {
         isValid = false
     }
 
-    if (prescription.ZSR < 1) {
-        errors.ZSR = "ZSR is not valid!"
+    if (prescription.zsrCode < 1) {
+        errors.zsrCode = "ZSR is not valid!"
         isValid = false
     }
 
-    if (!isRegexValid(prescription.email.trim(), "\\S+@(hin|HIN)\\.\\S+")) {
-        errors.email = "Invalid HIN address format!"
+    if (!isRegexValid(prescription.hinEmailAddress.trim(), "\\S+@(hin|HIN)\\.\\S+")) {
+        errors.hinEmailAddress = "Invalid HIN address format!"
         isValid = false;
-    } else { errors.email = null }
+    } else { errors.hinEmailAddress = null }
 
     if (prescription.prescriptionDate.trim().length === 0) {
         errors.prescriptionDate = "Date of the prescription can't be empty!"
@@ -79,10 +88,48 @@ function isRegexValid(string, regex) {
     return string.match(regex)
 }
 
+function isInputValid(inputString, type, prompt) {
+    if(type === "string") {
+        errors.birthdate = "The birthdate can't be empty!"
+    } else if (type === "number") {
+
+    } else {
+
+    }
+}
+
+function convertDrugPrescriptions(drugPrescriptions) {
+    let result = []
+    for(let drugPres of drugPrescriptions) {
+        let newDrugPres = {
+            atcCode: drugPres.atcCode,
+            schedule: ""
+        }
+        let schedule = ""
+        if(drugPres.morning !== "") {
+            schedule = schedule.concat(drugPres.morning, ", ");
+        }
+        if(drugPres.noon !== "") {
+            schedule = schedule.concat(drugPres.noon, ", ");
+        }
+        if(drugPres.evening !== "") {
+            schedule = schedule.concat(drugPres.evening, ", ");
+        }
+        if(drugPres.night !== "") {
+            schedule = schedule.concat(drugPres.night, ", ");
+        }
+        if(drugPres.other !== "") {
+            schedule = schedule.concat(drugPres.other);
+        }
+        newDrugPres.schedule = schedule;
+        result.push(newDrugPres);
+    }
+    return result;
+}
+
 export default function form() {
     const [isLoading, setIsLoading] = useState(false)
-    const form = React.createElement(DrugsPrescriptionForm)
-    const [forms, setForms] = useState([form])
+    const [serviceList, setServiceList] = useState([{...defaultDrugPrescription}]);
     const [prescription, setPrescription] = useState(defaultModel)
     const [errors, setErrors] = useState({})
     const [drugsPrescription, setDrugPrescriptions] = useState()
@@ -104,71 +151,12 @@ export default function form() {
         const name = e.target.name
         const value = e.target.value
 
-        if (name === "drugsPrescription") {
-            setDrugPrescriptions({
-                ...prescription,
-                drugsPrescription: [
-                    {
-                        "id": (value)
-                    }
-                ]
-            })
-        } else if (name === "firstName") {
-            setPrescription({
-                ...prescription,
-                firstName: value
-            })
-        } else if (name === "lastName") {
-            setPrescription({
-                ...prescription,
-                lastNameName: value
-            })
-        } else if (name === "ZSR") {
-            setPrescription({
-                ...prescription,
-                ZSR: value
-            })
-        } else if (name === "date") {
-            setPrescription({
-                ...prescription,
-                date: value
-            })
-        } else if (name === "email") {
-            setPrescription({
-                ...prescription,
-                email: value
-            })
-        } else if (name === "patientFirstName") {
-            setPrescription({
-                ...prescription,
-                patientFirstName: value
-            })
-        } else if (name === "patientLastName") {
-            setPrescription({
-                ...prescription,
-                patientLastName: value
-            })
-        } else if (name === "birthdate") {
-            setPrescription({
-                ...prescription,
-                birthdate: value
-            })
-        } else if (name === "AHV") {
-            setPrescription({
-                ...prescription,
-                AHV: value
-            })
-        } else if (name === "numberOfUses") {
-            setPrescription({
-                ...prescription,
-                numberOfUses: value
-            })
-        } else {
-            setPrescription({
-                ...prescription,
-                [name]: value
-            })
-        }
+        prescription.drugPrescriptions = convertDrugPrescriptions(serviceList);
+
+        setPrescription({
+            ...prescription,
+            [name]: value
+        })
 
         const result = validateModel(prescription);
         if(!result.isValid) {
@@ -208,8 +196,8 @@ export default function form() {
                     </label>
 
                     <label className={styles.customField}>
-                        <span>ZSR</span>{errors.ZSR && <span className={styles.error}>{errors.ZSR}</span>}
-                        <input type="number" name="ZSR" onChange={handleChange} required={true}/>
+                        <span>ZSR-Nr.:</span>{errors.zsrCode && <span className={styles.error}>{errors.zsrCode}</span>}
+                        <input type="number" name="zsrCode" onChange={handleChange} required={true}/>
                     </label>
 
                     <label className={styles.customField}>
@@ -218,8 +206,8 @@ export default function form() {
                     </label>
 
                     <label className={styles.customField}>
-                        <span>HIN address</span>{errors.email && <span className={styles.error}>{errors.email}</span>}
-                        <input type="text" name="email" onChange={handleChange} value={prescription.email}/>
+                        <span>HIN-Emailadresse:</span>{errors.hinEmailAddress && <span className={styles.error}>{errors.hinEmailAddress}</span>}
+                        <input type="text" name="hinEmailAddress" onChange={handleChange} value={prescription.hinEmailAddress}/>
                     </label>
                 </fieldset>
 
@@ -250,10 +238,40 @@ export default function form() {
                     </label>
                 </fieldset>
 
-                {forms}
+                {serviceList.map((singleService, index) => (
+                <fieldset key={index} className={styles.inputGroup}>
+                    <label className={styles.customField}>
+                        <span>ATC-Nr.:</span>{errors.drugPrescriptions && <span className={styles.error}>{errors.drugPrescriptions[index]}</span>}
+                        <input name="atcCode" type="text" id="service" value={singleService.service}
+                            onChange={(e) => handleServiceChange(e, index)} required />
+                    </label>
+                    <div>
+                        <label className={styles.scheduleCheckbox}>
+                            <span>Morgens:</span>
+                            <input type="checkbox" name="morning" onChange={e => handleScheduleChange(e, index)}/>
+                        </label>
+                        <label className={styles.scheduleCheckbox}>
+                            <span>Mittags:</span>
+                            <input type="checkbox" name="noon" onChange={e => handleScheduleChange(e, index)}/>
+                        </label>
+                        <label className={styles.scheduleCheckbox}>
+                            <span>Abends:</span>
+                            <input type="checkbox" name="evening" onChange={e => handleScheduleChange(e, index)}/>
+                        </label>
+                        <label className={styles.scheduleCheckbox}>
+                            <span>Nachts:</span>
+                            <input type="checkbox" name="night" onChange={e => handleScheduleChange(e, index)}/>
+                        </label>
+                        <label className={styles.scheduleInput}>
+                            <span>Anderes:</span>
+                            <input type="text" name="other" onChange={e => handleScheduleChange(e, index)}/>
+                        </label>
+                    </div>
 
-                <input type={"button"} value={"Add Form"} onClick={addForm}/>
-                <input type={"button"} value={"Remove Form"} onClick={removeForm}/>
+                </fieldset>))}
+
+                <input type={"button"} value={"Add Form"} onClick={handleServiceAdd}/>
+                <input type={"button"} value={"Remove Form"} onClick={handleServiceRemove}/>
 
                 <button disabled={isLoading}>
                     {isLoading ? "...Loading" : "Submit"}

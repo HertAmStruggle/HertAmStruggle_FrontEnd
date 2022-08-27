@@ -6,7 +6,7 @@ export default function DrugsPrescriptionForm() {
 
     return (
         <>
-            <fieldset className={styles.inputGroup}>
+            <fieldset htmlFor="" className={styles.inputGroup}>
 
                 <label className={styles.customField}>
                     <span>DrugName</span>

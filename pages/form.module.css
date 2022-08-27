@@ -11,6 +11,14 @@
     margin-bottom: 4em;
 }
 
+.scheduleCheckbox {
+
+}
+
+.scheduleInput {
+
+}
+
 .customField input:disabled, .customField select:disabled{
     background: #e0e0e0;
 }
