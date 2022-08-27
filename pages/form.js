@@ -1,4 +1,3 @@
-import DrugsPrescriptionForm from "../components/DrugsPrescriptionForm";
 import styles from "./form.module.css";
 import React, {useState} from "react";
 
@@ -33,17 +32,17 @@ function validateModel(prescription) {
     if (prescription.firstName.trim().length === 0) {
         errors.firstName = "Firstname can't be empty!"
         isValid = false
-    }
+    } else { errors.firstName = null }
 
     if (prescription.lastName.trim().length === 0) {
         errors.lastName = "Lastname can't be empty!"
         isValid = false
-    }
+    } else { errors.lastName = null }
 
     if (prescription.zsrCode < 1) {
         errors.zsrCode = "ZSR is not valid!"
         isValid = false
-    }
+    } else { errors.zsrCode = null }
 
     if (!isRegexValid(prescription.hinEmailAddress.trim(), "\\S+@(hin|HIN)\\.\\S+")) {
         errors.hinEmailAddress = "Invalid HIN address format!"
@@ -53,22 +52,22 @@ function validateModel(prescription) {
     if (prescription.prescriptionDate.trim().length === 0) {
         errors.prescriptionDate = "Date of the prescription can't be empty!"
         isValid = false;
-    }
+    } else { errors.prescriptionDate = null }
 
     if (prescription.patientFirstName.trim().length === 0) {
         errors.patientFirstName = "The firstname of the patient can't be empty!"
         isValid = false;
-    }
+    } else { errors.patientFirstName = null }
 
     if (prescription.patientLastName.trim().length === 0) {
         errors.patientLastName = "The lastname of the patient can't be empty!"
         isValid = false;
-    }
+    } else { errors.patientLastName = null }
 
     if (prescription.birthdate.trim().length === 0) {
         errors.birthdate = "The birthdate can't be empty!"
         isValid = false;
-    }
+    } else { errors.birthdate = null }
 
     if (isRegexValid(prescription.AHV.trim(), "756.\\d{4}.\\d{4}.\\d{2}")) {
         errors.AHV = "Invalid AHV format!"
@@ -78,9 +77,8 @@ function validateModel(prescription) {
     if (prescription.numberOfUses < 1) {
         errors.numberOfUses = "number of uses must be positive!"
         isValid = false;
-    }
+    } else { errors.numberOfUses = null }
 
-    console.log(errors.email)
     return {errors, isValid}
 }
 
@@ -132,17 +130,37 @@ export default function form() {
     const [serviceList, setServiceList] = useState([{...defaultDrugPrescription}]);
     const [prescription, setPrescription] = useState(defaultModel)
     const [errors, setErrors] = useState({})
-    const [drugsPrescription, setDrugPrescriptions] = useState()
 
-    const addForm = async (e) => {
-        setForms(forms.concat   (form))
-    }
+    const handleServiceAdd = () => {
+        setServiceList([...serviceList, {...defaultDrugPrescription}]);
+    };
 
-    const removeForm = async (e) => {
-        if (forms.length === 1){
-            alert("You need to add at least one drug")
+    const handleServiceRemove = (index) => {
+        const list = [...serviceList];
+        list.splice(index, 1);
+        setServiceList(list);
+    };
+
+    const handleServiceChange = (e, index) => {
+        const {name, value} = e.target;
+        const list = [...serviceList];
+        list[index][name] = value;
+        setServiceList(list);
+    };
+
+    const handleScheduleChange = (e, index) => {
+        if (e.target.hasOwnProperty("checked")){
+            if(e.target.checked) {
+                serviceList[index][e.target.name] = e.target.name;
+            } else {
+                serviceList[index][e.target.name] = "";
+            }
         } else {
-            setForms(forms.splice(-1))
+            if(e.target.value !== "") {
+                serviceList[index][e.target.name] = e.target.value;
+            } else {
+                serviceList[index][e.target.name] = e.target.value;
+            }
         }
     }
 
@@ -162,9 +180,6 @@ export default function form() {
         if(!result.isValid) {
             setErrors(result.errors);
         }
-
-        console.log(forms);
-
     }
 
     const handleSubmit = async (e) => {
@@ -186,12 +201,12 @@ export default function form() {
             <form name="contactForm" onSubmit={handleSubmit}>
                 <fieldset className={styles.inputGroup}>
                     <label className={styles.customField}>
-                        <span>FirstName</span>{errors.firstName && <span className={styles.error}>{errors.firstName}</span>}
+                        <span>Vorname:</span>{errors.firstName && <span className={styles.error}>{errors.firstName}</span>}
                         <input type="text" name="firstName" onChange={handleChange} value={prescription.firstName}/>
                     </label>
 
                     <label className={styles.customField}>
-                        <span>Lastname</span>{errors.lastName && <span className={styles.error}>{errors.lastName}</span>}
+                        <span>Nachname:</span>{errors.lastName && <span className={styles.error}>{errors.lastName}</span>}
                         <input type="text" name="lastName" onChange={handleChange} required={true}/>
                     </label>
 
@@ -201,7 +216,7 @@ export default function form() {
                     </label>
 
                     <label className={styles.customField}>
-                        <span>Date</span>{errors.prescriptionDate && <span className={styles.error}>{errors.prescriptionDate}</span>}
+                        <span>Datum der Ausstellung:</span>{errors.prescriptionDate && <span className={styles.error}>{errors.prescriptionDate}</span>}
                         <input type="date" name="prescriptionDate" onChange={handleChange} required={true}/>
                     </label>
 
@@ -213,27 +228,27 @@ export default function form() {
 
                 <fieldset className={styles.inputGroup}>
                     <label className={styles.customField}>
-                        <span>Patient Firstname</span>{errors.patientFirstName && <span className={styles.error}>{errors.patientFirstName}</span>}
+                        <span>Vorname des Patienten/der Patientin:</span>{errors.patientFirstName && <span className={styles.error}>{errors.patientFirstName}</span>}
                         <input type="text" name="patientFirstName" onChange={handleChange} required={true}/>
                     </label>
 
                     <label className={styles.customField}>
-                        <span>Patient Lastname</span>{errors.patientLastName && <span className={styles.error}>{errors.patientLastName}</span>}
+                        <span>Nachname des Patienten/der Patientin:</span>{errors.patientLastName && <span className={styles.error}>{errors.patientLastName}</span>}
                         <input type="text" name="patientLastName" onChange={handleChange} required={true}/>
                     </label>
 
                     <label className={styles.customField}>
-                        <span>Birthdate</span>{errors.birthdate && <span className={styles.error}>{errors.birthdate}</span>}
+                        <span>Geburtsdatum:</span>{errors.birthdate && <span className={styles.error}>{errors.birthdate}</span>}
                         <input type="date" name="birthdate" onChange={handleChange} required={true}/>
                     </label>
 
                     <label className={styles.customField}>
-                        <span>AHV-Nr.</span>{errors.AHV && <span className={styles.error}>{errors.AHV}</span>}
+                        <span>AHV-Nr.:</span>{errors.AHV && <span className={styles.error}>{errors.AHV}</span>}
                         <input type="text" name="AHV" onChange={handleChange} required={true}/>
                     </label>
 
                     <label className={styles.customField}>
-                        <span>number of uses</span>{errors.numberOfUses && <span className={styles.error}>{errors.numberOfUses}</span>}
+                        <span>Mehrfachrezept:</span>{errors.numberOfUses && <span className={styles.error}>{errors.numberOfUses}</span>}
                         <input type="number" name="numberOfUses" onChange={handleChange}/>
                     </label>
                 </fieldset>

@@ -9,8 +9,8 @@ export default function DrugsPrescriptionForm() {
             <fieldset htmlFor="" className={styles.inputGroup}>
 
                 <label className={styles.customField}>
-                    <span>DrugName</span>
-                    <input type="text" name="drugName" onChange={handleChange} required={true}/>
+                    <span>ATC Code</span>
+                    <input type="text" name="atcCode" onChange={handleChange} required={true}/>
                 </label>
 
                 <label classcName={styles.customField}>
