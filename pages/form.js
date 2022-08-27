@@ -175,6 +175,8 @@ export default function form() {
             setErrors(result.errors);
         }
 
+        console.log(forms);
+
     }
 
     const handleSubmit = async (e) => {
