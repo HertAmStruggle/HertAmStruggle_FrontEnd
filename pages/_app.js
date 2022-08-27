@@ -1,7 +1,7 @@
 import Link from "next/link"
 import "./_app.css"
 import Header from "../components/Header";
-import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
 
 export default function App({Component, pageProps}){
     const newPageProps = {
@@ -16,11 +16,13 @@ export default function App({Component, pageProps}){
                 </Link>
             </Header>
 
-            <Navbar/>
 
             <main className="page">
                 <Component {...newPageProps} />
             </main>
+
+            <Footer>
+            </Footer>
         </>
     )
 }
