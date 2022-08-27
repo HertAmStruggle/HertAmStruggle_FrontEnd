@@ -2,10 +2,6 @@ import styles from "./DrugsPrescriptionForm.module.css"
 
 export default function DrugsPrescriptionForm() {
 
-    const handleSubmit = async (e) => {
-
-    }
-
     const handleChange = async (e) => {}
 
     return (

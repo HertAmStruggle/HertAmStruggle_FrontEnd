@@ -191,8 +191,6 @@ export default function form() {
         setIsLoading(false)
     }
 
-    console.log(forms);
-
     return (
         <>
             <form name="contactForm" onSubmit={handleSubmit}>
