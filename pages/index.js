@@ -85,13 +85,12 @@ function validateModel(prescription, e) {
         isValid = false;
     } else { errors.numberOfUses = null }
 
-    // console.log(JSON.stringify(prescription));
 
     return {errors, isValid}
 }
 
 function isRegexValid(string, regex) {
-    return string.match(type);
+    return string.match(regex);
 }
 
 function convertDrugPrescriptions(drugPrescriptions) {
