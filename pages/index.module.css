@@ -34,7 +34,6 @@
     width: 100%;
     outline: none;
     display: flex;
-    flex-direction: column;
     flex: 1 1;
     font-size: 1em;
     font-family: 'Nunito', sans-serif;
