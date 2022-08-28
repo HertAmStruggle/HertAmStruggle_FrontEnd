@@ -1,6 +1,7 @@
 import {useRouter} from "next/router";
 import {useEffect, useState} from "react";
 import {getPrescriptionById, usePrescription} from "../../../lib/api";
+import styles from "./index.module.css"
 
 export default function CardPage() {
     const router = useRouter()
@@ -27,22 +28,30 @@ export default function CardPage() {
 
     return !prescription ? null : (
         <>
+            <div className={styles.PrescriptionInfo}>
             <h1>
                 Prescription {prescription.id}
             </h1>
             <h2>
-                Usable {prescription.numberOfUses}
+                Usable {prescription.numberOfUses} times
             </h2>
 
             <h2>
                 Issued
-                by {prescription.doctor.firstName} {prescription.doctor.lastName} ({prescription.doctor.zsrCode})({prescription.doctor.hinEmailAddress})
-                ({prescription.doctor.address})
+                by {prescription.doctor.firstName} {prescription.doctor.lastName}
             </h2>
+            <p>
+                ZSR : {prescription.doctor.zsrCode} <br/>
+                HIN : {prescription.doctor.hinEmailAddress} <br/>
+                Address : {prescription.doctor.address}
+            </p>
             <h2>
-                For {prescription.patient.firstName} {prescription.patient.lastName} ({prescription.patient.birthDate})
-                ({prescription.patient.AHV})
+                For {prescription.patient.firstName} {prescription.patient.lastName}
             </h2>
+            <p>
+                Birthdate : {prescription.patient.birthDate} <br/>
+                AHV : {prescription.patient.AHV}
+            </p>
             <h2>
                 For the following drugs
             </h2>
@@ -53,10 +62,14 @@ export default function CardPage() {
                             return (
                                 <div key={drug.drug.id}>
                                     <h2>
-                                        {drug.drug.name} ({drug.drug.approvalNumber})({drug.drug.permitHolder})({drug.drug.ATCCode})({drug.drug.Category})
+                                        {drug.drug.name}
                                     </h2>
                                     <p>
-                                        {drug.prescriptionText}
+                                        Approval Number : {drug.drug.approvalNumber} <br/>
+                                        Permit Holder : {drug.drug.permitHolder} <br/>
+                                        ATC : {drug.drug.ATCCode} <br/>
+                                        Category : {drug.drug.Category} <br/>
+                                        Additional Info: {drug.prescriptionText}
                                     </p>
                                 </div>
                             )
@@ -67,9 +80,7 @@ export default function CardPage() {
             <button type={"button"} onClick={handleUse}>
                 Use The Prescription
             </button>
-            <h2>
-                {JSON.stringify(prescription, null, 4)}
-            </h2>
+            </div>
         </>
     )
 }
