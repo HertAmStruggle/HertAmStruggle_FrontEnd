@@ -29,57 +29,64 @@ export default function CardPage() {
     return !prescription ? null : (
         <>
             <div className={styles.PrescriptionInfo}>
-            <h1>
-                Prescription {prescription.id}
-            </h1>
-            <h2>
-                Usable {prescription.numberOfUses} times
-            </h2>
-
-            <h2>
-                Issued
-                by {prescription.doctor.firstName} {prescription.doctor.lastName}
-            </h2>
-            <p>
-                ZSR : {prescription.doctor.zsrCode} <br/>
-                HIN : {prescription.doctor.hinEmailAddress} <br/>
-                Address : {prescription.doctor.address}
-            </p>
-            <h2>
-                For {prescription.patient.firstName} {prescription.patient.lastName}
-            </h2>
-            <p>
-                Birthdate : {prescription.patient.birthDate} <br/>
-                AHV : {prescription.patient.AHV}
-            </p>
-            <h2>
-                For the following drugs
-            </h2>
-            <div>
-                {prescription && <>
-                    {
-                        prescription.drugs.map(drug => {
-                            return (
-                                <div key={drug.drug.id}>
-                                    <h2>
-                                        {drug.drug.name}
-                                    </h2>
-                                    <p>
-                                        Approval Number : {drug.drug.approvalNumber} <br/>
-                                        Permit Holder : {drug.drug.permitHolder} <br/>
-                                        ATC : {drug.drug.ATCCode} <br/>
-                                        Category : {drug.drug.Category} <br/>
-                                        Additional Info: {drug.prescriptionText}
-                                    </p>
-                                </div>
-                            )
-                        })
-                    }
-                </>}
-            </div>
-            <button type={"button"} onClick={handleUse}>
-                Use The Prescription
-            </button>
+                <h1>
+                    Prescription {prescription.id}
+                </h1>
+                <h2>
+                    Usable {prescription.numberOfUses} times
+                </h2>
+                <div className={styles.personInfo}>
+                    <div class={styles.doctorInfo}>
+                        <h2>
+                            Issued
+                            by {prescription.doctor.firstName} {prescription.doctor.lastName}
+                        </h2>
+                        <p>
+                            ZSR : {prescription.doctor.zsrCode} <br/>
+                            HIN : {prescription.doctor.hinEmailAddress} <br/>
+                            Address : {prescription.doctor.address}
+                        </p>
+                    </div>
+                    <div className={styles.patientInfo}>
+                        <h2>
+                            For {prescription.patient.firstName} {prescription.patient.lastName}
+                        </h2>
+                        <p>
+                            Birthdate : {prescription.patient.birthDate} <br/>
+                            AHV : {prescription.patient.AHV}
+                        </p>
+                    </div>
+                </div>
+                <div className={styles.drugPrescriptions}>
+                    <h2>
+                        For the following drugs
+                    </h2>
+                    <div>
+                        {prescription && <>
+                            {
+                                prescription.drugs.map(drug => {
+                                    return (
+                                        <div key={drug.drug.id} className={styles.drugPrescription}>
+                                            <h3>
+                                                {drug.drug.name}
+                                            </h3>
+                                            <p>
+                                                Approval Number : {drug.drug.approvalNumber} <br/>
+                                                Permit Holder : {drug.drug.permitHolder} <br/>
+                                                ATC : {drug.drug.ATCCode} <br/>
+                                                Category : {drug.drug.Category} <br/>
+                                                Additional Info: {drug.prescriptionText}
+                                            </p>
+                                        </div>
+                                    )
+                                })
+                            }
+                        </>}
+                    </div>
+                </div>
+                <button type={"button"} onClick={handleUse} className={styles.useButton}>
+                    Use The Prescription
+                </button>
             </div>
         </>
     )
