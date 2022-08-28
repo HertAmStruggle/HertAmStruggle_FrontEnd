@@ -24,6 +24,7 @@ export default function CardPage() {
 
     const handleUse = (() => {
         usePrescription(prescription.id)
+        window.location.reload(false);
     })
 
     return !prescription ? null : (
