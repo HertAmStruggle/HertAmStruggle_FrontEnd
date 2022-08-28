@@ -1,5 +1,6 @@
 import styles from "./index.module.css";
 import React, {useState} from "react";
+import {createPrescription} from "../lib/api";
 
 const defaultModel = {
     "firstName": "",
@@ -33,58 +34,82 @@ function validateModel(prescription) {
     if (prescription.firstName.trim().length === 0) {
         errors.firstName = "Firstname can't be empty!"
         isValid = false
-    } else { errors.firstName = null }
+    } else {
+        errors.firstName = null
+    }
 
     if (prescription.lastName.trim().length === 0) {
         errors.lastName = "Lastname can't be empty!"
         isValid = false
-    } else { errors.lastName = null }
+    } else {
+        errors.lastName = null
+    }
 
     if (prescription.zsrCode < 1) {
         errors.zsrCode = "ZSR is not valid!"
         isValid = false
-    } else { errors.zsrCode = null }
+    } else {
+        errors.zsrCode = null
+    }
 
     if (!isRegexValid(prescription.hinEmailAddress.trim(), "\\S+@(hin|HIN)\\.\\S+")) {
         errors.hinEmailAddress = "Invalid HIN address format!"
         isValid = false;
-    } else { errors.hinEmailAddress = null }
+    } else {
+        errors.hinEmailAddress = null
+    }
 
     if (prescription.prescriptionDate.trim().length === 0) {
         errors.prescriptionDate = "Date of the prescription can't be empty!"
         isValid = false;
-    } else { errors.prescriptionDate = null }
+    } else {
+        errors.prescriptionDate = null
+    }
 
     if (prescription.expirationDate.trim().length === 0) {
         errors.expirationDate = "Expiration date can't be empty!"
         isValid = false;
-    } else { errors.expirationDate = null }
+    } else {
+        errors.expirationDate = null
+    }
 
     if (prescription.patientFirstName.trim().length === 0) {
         errors.patientFirstName = "The firstname of the patient can't be empty!"
         isValid = false;
-    } else { errors.patientFirstName = null }
+    } else {
+        errors.patientFirstName = null
+    }
 
     if (prescription.patientLastName.trim().length === 0) {
         errors.patientLastName = "The lastname of the patient can't be empty!"
         isValid = false;
-    } else { errors.patientLastName = null }
+    } else {
+        errors.patientLastName = null
+    }
 
     if (prescription.birthdate.trim().length === 0) {
         errors.birthdate = "The birthdate can't be empty!"
         isValid = false;
-    } else { errors.birthdate = null }
+    } else {
+        errors.birthdate = null
+    }
 
     if (isRegexValid(prescription.AHV.trim(), "756.\\d{4}.\\d{4}.\\d{2}")) {
         errors.AHV = "Invalid AHV format!"
         isValid = false;
-    } else { errors.AHV = null }
+    } else {
+        errors.AHV = null
+    }
 
     if (prescription.numberOfUses < 1) {
         errors.numberOfUses = "number of uses must be positive!"
         isValid = false;
-    } else { errors.numberOfUses = null }
+    } else {
+        errors.numberOfUses = null
+    }
 
+    console.log(isValid)
+    console.log(JSON.stringify(prescription))
 
     return {errors, isValid}
 }
@@ -95,25 +120,25 @@ function isRegexValid(string, regex) {
 
 function convertDrugPrescriptions(drugPrescriptions) {
     let result = []
-    for(let drugPres of drugPrescriptions) {
+    for (let drugPres of drugPrescriptions) {
         let newDrugPres = {
             atcCode: drugPres.atcCode,
             schedule: ""
         }
         let schedule = ""
-        if(drugPres.morning !== "") {
+        if (drugPres.morning !== "") {
             schedule = schedule.concat(drugPres.morning, ", ");
         }
-        if(drugPres.noon !== "") {
+        if (drugPres.noon !== "") {
             schedule = schedule.concat(drugPres.noon, ", ");
         }
-        if(drugPres.evening !== "") {
+        if (drugPres.evening !== "") {
             schedule = schedule.concat(drugPres.evening, ", ");
         }
-        if(drugPres.night !== "") {
+        if (drugPres.night !== "") {
             schedule = schedule.concat(drugPres.night, ", ");
         }
-        if(drugPres.other !== "") {
+        if (drugPres.other !== "") {
             schedule = schedule.concat(drugPres.other);
         }
         newDrugPres.schedule = schedule;
@@ -143,17 +168,19 @@ export default function form() {
         const list = [...serviceList];
         list[index][name] = value;
         setServiceList(list);
+
+        prescription.drugPrescriptions = convertDrugPrescriptions(serviceList);
     };
 
     const handleScheduleChange = (e, index) => {
-        if (e.target.hasOwnProperty("checked")){
-            if(e.target.checked) {
+        if (e.target.hasOwnProperty("checked")) {
+            if (e.target.checked) {
                 serviceList[index][e.target.name] = e.target.name;
             } else {
                 serviceList[index][e.target.name] = "";
             }
         } else {
-            if(e.target.value !== "") {
+            if (e.target.value !== "") {
                 serviceList[index][e.target.name] = e.target.value;
             } else {
                 serviceList[index][e.target.name] = e.target.value;
@@ -174,7 +201,7 @@ export default function form() {
         })
 
         const result = validateModel(prescription);
-        if(!result.isValid) {
+        if (!result.isValid) {
             setErrors(result.errors);
         }
     }
@@ -188,9 +215,13 @@ export default function form() {
         if (!result.isValid) {
             setErrors(result.errors)
             setIsLoading(false)
-            return
+        } else {
+            const newPrescription = await createPrescription(JSON.stringify(prescription))
+            alert("Card created!")
+            router.push(`/prescription/${newPrescription.id}`)
+            setIsLoading(false)
         }
-        setIsLoading(false)
+
     }
 
     return (
@@ -198,12 +229,14 @@ export default function form() {
             <form name="contactForm" onSubmit={handleSubmit} className={styles.formMain}>
                 <fieldset className={styles.inputGroup}>
                     <label className={styles.customField}>
-                        <span>Vorname:</span>{errors.firstName && <span className={styles.error}>{errors.firstName}</span>}
+                        <span>Vorname:</span>{errors.firstName &&
+                        <span className={styles.error}>{errors.firstName}</span>}
                         <input type="text" name="firstName" onChange={handleChange} value={prescription.firstName}/>
                     </label>
 
                     <label className={styles.customField}>
-                        <span>Nachname:</span>{errors.lastName && <span className={styles.error}>{errors.lastName}</span>}
+                        <span>Nachname:</span>{errors.lastName &&
+                        <span className={styles.error}>{errors.lastName}</span>}
                         <input type="text" name="lastName" onChange={handleChange} required={true}/>
                     </label>
 
@@ -213,34 +246,41 @@ export default function form() {
                     </label>
 
                     <label className={styles.customField}>
-                        <span>Datum der Ausstellung:</span>{errors.prescriptionDate && <span className={styles.error}>{errors.prescriptionDate}</span>}
+                        <span>Datum der Ausstellung:</span>{errors.prescriptionDate &&
+                        <span className={styles.error}>{errors.prescriptionDate}</span>}
                         <input type="date" name="prescriptionDate" onChange={handleChange} required={true}/>
                     </label>
 
                     <label className={styles.customField}>
-                        <span>Ablaufdatum des Rezeptes:</span>{errors.expirationDate && <span className={styles.error}>{errors.expirationDate}</span>}
+                        <span>Ablaufdatum des Rezeptes:</span>{errors.expirationDate &&
+                        <span className={styles.error}>{errors.expirationDate}</span>}
                         <input type="date" name="expirationDate" onChange={handleChange} required={true}/>
                     </label>
 
                     <label className={styles.customField}>
-                        <span>HIN-Emailadresse:</span>{errors.hinEmailAddress && <span className={styles.error}>{errors.hinEmailAddress}</span>}
-                        <input type="text" name="hinEmailAddress" onChange={handleChange} value={prescription.hinEmailAddress}/>
+                        <span>HIN-Emailadresse:</span>{errors.hinEmailAddress &&
+                        <span className={styles.error}>{errors.hinEmailAddress}</span>}
+                        <input type="text" name="hinEmailAddress" onChange={handleChange}
+                               value={prescription.hinEmailAddress}/>
                     </label>
                 </fieldset>
 
                 <fieldset className={styles.inputGroup}>
                     <label className={styles.customField}>
-                        <span>Vorname des Patienten/der Patientin:</span>{errors.patientFirstName && <span className={styles.error}>{errors.patientFirstName}</span>}
+                        <span>Vorname des Patienten/der Patientin:</span>{errors.patientFirstName &&
+                        <span className={styles.error}>{errors.patientFirstName}</span>}
                         <input type="text" name="patientFirstName" onChange={handleChange} required={true}/>
                     </label>
 
                     <label className={styles.customField}>
-                        <span>Nachname des Patienten/der Patientin:</span>{errors.patientLastName && <span className={styles.error}>{errors.patientLastName}</span>}
+                        <span>Nachname des Patienten/der Patientin:</span>{errors.patientLastName &&
+                        <span className={styles.error}>{errors.patientLastName}</span>}
                         <input type="text" name="patientLastName" onChange={handleChange} required={true}/>
                     </label>
 
                     <label className={styles.customField}>
-                        <span>Geburtsdatum:</span>{errors.birthdate && <span className={styles.error}>{errors.birthdate}</span>}
+                        <span>Geburtsdatum:</span>{errors.birthdate &&
+                        <span className={styles.error}>{errors.birthdate}</span>}
                         <input type="date" name="birthdate" onChange={handleChange} required={true}/>
                     </label>
 
@@ -250,7 +290,8 @@ export default function form() {
                     </label>
 
                     <label className={styles.customField}>
-                        <span>Mehrfachrezept:</span>{errors.numberOfUses && <span className={styles.error}>{errors.numberOfUses}</span>}
+                        <span>Mehrfachrezept:</span>{errors.numberOfUses &&
+                        <span className={styles.error}>{errors.numberOfUses}</span>}
                         <input type="number" name="numberOfUses" onChange={handleChange}/>
                     </label>
                 </fieldset>
@@ -258,9 +299,10 @@ export default function form() {
                 {serviceList.map((singleService, index) => (
                     <fieldset key={index} className={styles.inputGroup}>
                         <label className={styles.customField}>
-                            <span>ATC-Nr.:</span>{errors.drugPrescriptions && <span className={styles.error}>{errors.drugPrescriptions[index]}</span>}
+                            <span>ATC-Nr.:</span>{errors.drugPrescriptions &&
+                            <span className={styles.error}>{errors.drugPrescriptions[index]}</span>}
                             <input name="atcCode" type="text" id="service" value={singleService.service}
-                                   onChange={(e) => handleServiceChange(e, index)} required />
+                                   onChange={(e) => handleServiceChange(e, index)} required/>
                         </label>
                         <div>
                             <label className={styles.scheduleCheckbox}>
