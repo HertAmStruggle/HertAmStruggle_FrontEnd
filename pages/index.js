@@ -1,5 +1,7 @@
 import styles from "./index.module.css";
 import React, {useState} from "react";
+import {createPrescription} from "../lib/api";
+
 
 const defaultModel = {
     "firstName": "",
@@ -85,6 +87,8 @@ function validateModel(prescription) {
         isValid = false;
     } else { errors.numberOfUses = null }
 
+    console.log(isValid);
+    console.log(errors);
 
     return {errors, isValid}
 }
@@ -159,6 +163,8 @@ export default function form() {
                 serviceList[index][e.target.name] = e.target.value;
             }
         }
+
+        prescription.drugPrescriptions = convertDrugPrescriptions(serviceList);
     }
 
     const handleChange = (e) => {
@@ -180,6 +186,10 @@ export default function form() {
     }
 
     const handleSubmit = async (e) => {
+        console.log(prescription)
+
+        prescription.drugPrescriptions = convertDrugPrescriptions(serviceList);
+
         e.preventDefault()
         setIsLoading(true)
 
@@ -188,8 +198,13 @@ export default function form() {
         if (!result.isValid) {
             setErrors(result.errors)
             setIsLoading(false)
-            return
+        } else {
+            const newPrescription = await createPrescription(JSON.stringify(prescription))
+            alert("Prescription created!")
+            //router.push(/prescription/${newPrescription.id})
+            setIsLoading(false)
         }
+
         setIsLoading(false)
     }
 
@@ -307,7 +322,7 @@ export default function form() {
                 </div>
 
                 <button disabled={isLoading} className={styles.submitButton}>
-                    {isLoading ? "Lädt..." : "Senden"}
+                    {isLoading ? "Loading..." : "Submit"}
                 </button>
 
             </form>
