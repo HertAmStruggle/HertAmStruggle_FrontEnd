@@ -197,6 +197,7 @@ export default function form() {
         <>
             <form name="contactForm" onSubmit={handleSubmit} className={styles.formMain}>
                 <fieldset className={styles.inputGroup}>
+                    <h2>Angaben Arzt</h2>
                     <div className={styles.twoInputs}>
                         <label className={styles.customField}>
                             {errors.firstName && <span className={styles.error}>{errors.firstName}</span>}
@@ -209,39 +210,30 @@ export default function form() {
                         </label>
                     </div>
 
+                    <div className={styles.twoInputs}>
                         <label className={styles.customField}>
                             {errors.zsrCode && <span className={styles.error}>{errors.zsrCode}</span>}
                             <input type="number" placeholder="ZSR-Nr." name="zsrCode" onChange={handleChange} required={true}/>
                         </label>
 
-                    <div className={styles.twoInputs}>
                         <label className={styles.customField}>
-                            <span>Datum der Ausstellung:</span>{errors.prescriptionDate && <span className={styles.error}>{errors.prescriptionDate}</span>}
-                            <input type="date" name="prescriptionDate" onChange={handleChange} required={true}/>
+                            {errors.hinEmailAddress && <span className={styles.error}>{errors.hinEmailAddress}</span>}
+                            <input type="text" placeholder="HIN-Emailadresse" name="hinEmailAddress" onChange={handleChange} value={prescription.hinEmailAddress}/>
                         </label>
-
-                    <label className={styles.customField}>
-                        <span>Ablaufdatum des Rezeptes:</span>{errors.expirationDate && <span className={styles.error}>{errors.expirationDate}</span>}
-                        <input type="date" name="expirationDate" onChange={handleChange} required={true}/>
-                    </label>
                     </div>
-
-                    <label className={styles.customField}>
-                        {errors.hinEmailAddress && <span className={styles.error}>{errors.hinEmailAddress}</span>}
-                        <input type="text" placeholder="HIN-Emailadresse" name="hinEmailAddress" onChange={handleChange} value={prescription.hinEmailAddress}/>
-                    </label>
                 </fieldset>
 
                 <fieldset className={styles.inputGroup}>
+                    <h2>Angaben Patient/Patientin</h2>
                     <div className={styles.twoInputs}>
                         <label className={styles.customField}>
                             {errors.patientFirstName && <span className={styles.error}>{errors.patientFirstName}</span>}
-                            <input type="text" placeholder="Vorname des Patienten/der Patientin" name="patientFirstName" onChange={handleChange} required={true}/>
+                            <input type="text" placeholder="Vorname" name="patientFirstName" onChange={handleChange} required={true}/>
                         </label>
 
                         <label className={styles.customField}>
                             {errors.patientLastName && <span className={styles.error}>{errors.patientLastName}</span>}
-                            <input type="text" placeholder="Nachname des Patienten/der Patientin" name="patientLastName" onChange={handleChange} required={true}/>
+                            <input type="text" placeholder="Nachname" name="patientLastName" onChange={handleChange} required={true}/>
                         </label>
                     </div>
                     <label className={styles.customField}>
@@ -253,6 +245,23 @@ export default function form() {
                         {errors.AHV && <span className={styles.error}>{errors.AHV}</span>}
                         <input type="text" placeholder="AHV-Nummer" name="AHV" onChange={handleChange} required={true}/>
                     </label>
+
+                </fieldset>
+
+                <fieldset className={styles.inputGroup}>
+                    <h2>Angaben Rezept</h2>
+
+                    <div className={styles.twoInputs}>
+                        <label className={styles.customField}>
+                            <span>Datum der Ausstellung:</span>{errors.prescriptionDate && <span className={styles.error}>{errors.prescriptionDate}</span>}
+                            <input type="date" name="prescriptionDate" onChange={handleChange} required={true}/>
+                        </label>
+
+                        <label className={styles.customField}>
+                            <span>Ablaufdatum des Rezeptes:</span>{errors.expirationDate && <span className={styles.error}>{errors.expirationDate}</span>}
+                            <input type="date" name="expirationDate" onChange={handleChange} required={true}/>
+                        </label>
+                    </div>
 
                     <label className={styles.customField}>
                         {errors.numberOfUses && <span className={styles.error}>{errors.numberOfUses}</span>}
