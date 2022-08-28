@@ -30,36 +30,36 @@ export default function CardPage() {
         <>
             <div className={styles.PrescriptionInfo}>
                 <h1>
-                    Prescription {prescription.id}
+                    Verordnung: {prescription.id}
                 </h1>
                 <h2>
-                    Usable {prescription.numberOfUses} times
+                    Mehrfach brauchbar: {prescription.numberOfUses}
                 </h2>
                 <div className={styles.personInfo}>
                     <div class={styles.doctorInfo}>
                         <h2>
-                            Issued
+                            Ausgestellt:
                             by {prescription.doctor.firstName} {prescription.doctor.lastName}
                         </h2>
                         <p>
-                            ZSR : {prescription.doctor.zsrCode} <br/>
-                            HIN : {prescription.doctor.hinEmailAddress} <br/>
-                            Address : {prescription.doctor.address}
+                            ZSR-Nr.: : {prescription.doctor.zsrCode} <br/>
+                            HIN-Emailadresse: : {prescription.doctor.hinEmailAddress} <br/>
+                            Addresse: : {prescription.doctor.address}
                         </p>
                     </div>
                     <div className={styles.patientInfo}>
                         <h2>
-                            For {prescription.patient.firstName} {prescription.patient.lastName}
+                            Für Patient/Patientin: {prescription.patient.firstName} {prescription.patient.lastName}
                         </h2>
                         <p>
-                            Birthdate : {prescription.patient.birthDate} <br/>
-                            AHV : {prescription.patient.AHV}
+                            Geburtsdatum: : {prescription.patient.birthDate} <br/>
+                            AHV-Nr.: : {prescription.patient.AHV}
                         </p>
                     </div>
                 </div>
                 <div className={styles.drugPrescriptions}>
                     <h2>
-                        For the following drugs
+                        Medikamente
                     </h2>
                     <div>
                         {prescription && <>
@@ -71,11 +71,11 @@ export default function CardPage() {
                                                 {drug.drug.name}
                                             </h3>
                                             <p>
-                                                Approval Number : {drug.drug.approvalNumber} <br/>
-                                                Permit Holder : {drug.drug.permitHolder} <br/>
-                                                ATC : {drug.drug.ATCCode} <br/>
-                                                Category : {drug.drug.Category} <br/>
-                                                Additional Info: {drug.prescriptionText}
+                                                Zulassungsnummer: : {drug.drug.approvalNumber} <br/>
+                                                Hersteller: : {drug.drug.permitHolder} <br/>
+                                                ATC-Nr.: : {drug.drug.ATCCode} <br/>
+                                                Kategorie: : {drug.drug.Category} <br/>
+                                                Zusätzliche Informationen: : {drug.prescriptionText}
                                             </p>
                                         </div>
                                     )
@@ -85,7 +85,7 @@ export default function CardPage() {
                     </div>
                 </div>
                 <button type={"button"} onClick={handleUse} className={styles.useButton}>
-                    Use The Prescription
+                    Entwerten!
                 </button>
             </div>
         </>
