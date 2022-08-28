@@ -30,7 +30,7 @@ export default function CardPage() {
         <>
             <div className={styles.PrescriptionInfo}>
                 <h1>
-                    Verordnung: {prescription.id}
+                    Rezept #{prescription.id}
                 </h1>
                 <h2>
                     Mehrfach brauchbar: {prescription.numberOfUses}
@@ -38,13 +38,12 @@ export default function CardPage() {
                 <div className={styles.personInfo}>
                     <div class={styles.doctorInfo}>
                         <h2>
-                            Ausgestellt:
-                            by {prescription.doctor.firstName} {prescription.doctor.lastName}
+                            Ausgestellt von: {prescription.doctor.firstName} {prescription.doctor.lastName}
                         </h2>
                         <p>
-                            ZSR-Nr.: : {prescription.doctor.zsrCode} <br/>
-                            HIN-Emailadresse: : {prescription.doctor.hinEmailAddress} <br/>
-                            Addresse: : {prescription.doctor.address}
+                            ZSR-Nr.: {prescription.doctor.zsrCode} <br/>
+                            HIN-Emailadresse: {prescription.doctor.hinEmailAddress} <br/>
+                            Addresse: {prescription.doctor.address}
                         </p>
                     </div>
                     <div className={styles.patientInfo}>
@@ -52,16 +51,16 @@ export default function CardPage() {
                             Für Patient/Patientin: {prescription.patient.firstName} {prescription.patient.lastName}
                         </h2>
                         <p>
-                            Geburtsdatum: : {prescription.patient.birthDate} <br/>
-                            AHV-Nr.: : {prescription.patient.AHV}
+                            Geburtsdatum: {prescription.patient.birthDate} <br/>
+                            AHV-Nr.: {prescription.patient.AHV}
                         </p>
                     </div>
                 </div>
-                <div className={styles.drugPrescriptions}>
+                <div className={styles.drugs}>
                     <h2>
                         Medikamente
                     </h2>
-                    <div>
+                    <div className={styles.drugPrescriptions}>
                         {prescription && <>
                             {
                                 prescription.drugs.map(drug => {
@@ -71,11 +70,11 @@ export default function CardPage() {
                                                 {drug.drug.name}
                                             </h3>
                                             <p>
-                                                Zulassungsnummer: : {drug.drug.approvalNumber} <br/>
-                                                Hersteller: : {drug.drug.permitHolder} <br/>
-                                                ATC-Nr.: : {drug.drug.ATCCode} <br/>
-                                                Kategorie: : {drug.drug.Category} <br/>
-                                                Zusätzliche Informationen: : {drug.prescriptionText}
+                                                Zulassungsnummer: {drug.drug.approvalNumber} <br/>
+                                                Hersteller: {drug.drug.permitHolder} <br/>
+                                                ATC-Nr.: {drug.drug.ATCCode} <br/>
+                                                Kategorie: {drug.drug.Category} <br/>
+                                                Zusätzliche Informationen: {drug.prescriptionText}
                                             </p>
                                         </div>
                                     )

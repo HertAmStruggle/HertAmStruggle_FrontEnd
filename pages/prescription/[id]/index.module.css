@@ -12,29 +12,30 @@
 
 .drugPrescriptions {
     display: flex;
-    flex-direction: column;
-}
-
-.drugPrescriptions h2 {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 15px;
     margin-bottom: 15px;
 }
 
 .drugPrescriptions .drugPrescription {
     background-color: var(--turquoise40);
-    width: 50%;
-    margin: 0 auto 15px;
     padding: 15px;
+    flex-basis: calc(50% - 7.5px);
+    flex-grow: 0;
+    flex-shrink: 0;
 }
 
 .useButton {
     background-color: var(--turquoise);
+    font-size: 1em;
     color: #fff;
-    border: var(--turquoise20);
+    border: none;
     border-radius: 5px;
-    padding: 5px;
+    padding: 10px;
     cursor: pointer;
 }
 
-.useButton {
+.useButton:active {
     background-color: var(--turquoise70);
 }
