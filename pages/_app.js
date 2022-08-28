@@ -1,7 +1,8 @@
 import Link from "next/link"
-import "./_app.css"
+import styles from "./_app.css"
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+import logo from "../resources/Manus_Optimus_Logo.svg";
 
 export default function App({Component, pageProps}){
     const newPageProps = {
@@ -12,8 +13,9 @@ export default function App({Component, pageProps}){
         <>
             <Header>
                 <Link href="/" passHref>
-                    Hert Am Struggle!
+                    <img src={logo.src} alt="logo" />
                 </Link>
+                <h1>manus optimus</h1>
             </Header>
 
 

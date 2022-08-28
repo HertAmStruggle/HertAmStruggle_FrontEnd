@@ -1,5 +1,17 @@
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300&display=swap');
 
+:root {
+    --turquoise:#008888;
+    --turquoise70:#4CACAC;
+    --turquoise40:#99D0D0;
+    --turquoise20:#CCE7E7;
+
+    --grey:#333333;
+    --grey70:707070;
+    --grey40:#ADADAD;
+    --grey20:#D6D6D6;
+}
+
 * {
     margin: 0;
     padding: 0;
