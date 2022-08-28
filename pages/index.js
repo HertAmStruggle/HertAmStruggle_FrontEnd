@@ -197,72 +197,77 @@ export default function form() {
         <>
             <form name="contactForm" onSubmit={handleSubmit} className={styles.formMain}>
                 <fieldset className={styles.inputGroup}>
-                    <label className={styles.customField}>
-                        <span>Vorname:</span>{errors.firstName && <span className={styles.error}>{errors.firstName}</span>}
-                        <input type="text" name="firstName" onChange={handleChange} value={prescription.firstName}/>
-                    </label>
+                    <div className={styles.twoInputs}>
+                        <label className={styles.customField}>
+                            {errors.firstName && <span className={styles.error}>{errors.firstName}</span>}
+                            <input type="text" placeholder="Vorname" name="firstName" onChange={handleChange} value={prescription.firstName}/>
+                        </label>
 
-                    <label className={styles.customField}>
-                        <span>Nachname:</span>{errors.lastName && <span className={styles.error}>{errors.lastName}</span>}
-                        <input type="text" name="lastName" onChange={handleChange} required={true}/>
-                    </label>
+                        <label className={styles.customField}>
+                            {errors.lastName && <span className={styles.error}>{errors.lastName}</span>}
+                            <input type="text" placeholder="Nachname" name="lastName" onChange={handleChange} required={true}/>
+                        </label>
+                    </div>
 
-                    <label className={styles.customField}>
-                        <span>ZSR-Nr.:</span>{errors.zsrCode && <span className={styles.error}>{errors.zsrCode}</span>}
-                        <input type="number" name="zsrCode" onChange={handleChange} required={true}/>
-                    </label>
+                        <label className={styles.customField}>
+                            {errors.zsrCode && <span className={styles.error}>{errors.zsrCode}</span>}
+                            <input type="number" placeholder="ZSR-Nr." name="zsrCode" onChange={handleChange} required={true}/>
+                        </label>
 
-                    <label className={styles.customField}>
-                        <span>Datum der Ausstellung:</span>{errors.prescriptionDate && <span className={styles.error}>{errors.prescriptionDate}</span>}
-                        <input type="date" name="prescriptionDate" onChange={handleChange} required={true}/>
-                    </label>
+                    <div className={styles.twoInputs}>
+                        <label className={styles.customField}>
+                            <span>Datum der Ausstellung:</span>{errors.prescriptionDate && <span className={styles.error}>{errors.prescriptionDate}</span>}
+                            <input type="date" name="prescriptionDate" onChange={handleChange} required={true}/>
+                        </label>
 
                     <label className={styles.customField}>
                         <span>Ablaufdatum des Rezeptes:</span>{errors.expirationDate && <span className={styles.error}>{errors.expirationDate}</span>}
                         <input type="date" name="expirationDate" onChange={handleChange} required={true}/>
                     </label>
+                    </div>
 
                     <label className={styles.customField}>
-                        <span>HIN-Emailadresse:</span>{errors.hinEmailAddress && <span className={styles.error}>{errors.hinEmailAddress}</span>}
-                        <input type="text" name="hinEmailAddress" onChange={handleChange} value={prescription.hinEmailAddress}/>
+                        {errors.hinEmailAddress && <span className={styles.error}>{errors.hinEmailAddress}</span>}
+                        <input type="text" placeholder="HIN-Emailadresse" name="hinEmailAddress" onChange={handleChange} value={prescription.hinEmailAddress}/>
                     </label>
                 </fieldset>
 
                 <fieldset className={styles.inputGroup}>
-                    <label className={styles.customField}>
-                        <span>Vorname des Patienten/der Patientin:</span>{errors.patientFirstName && <span className={styles.error}>{errors.patientFirstName}</span>}
-                        <input type="text" name="patientFirstName" onChange={handleChange} required={true}/>
-                    </label>
+                    <div className={styles.twoInputs}>
+                        <label className={styles.customField}>
+                            {errors.patientFirstName && <span className={styles.error}>{errors.patientFirstName}</span>}
+                            <input type="text" placeholder="Vorname des Patienten/der Patientin" name="patientFirstName" onChange={handleChange} required={true}/>
+                        </label>
 
-                    <label className={styles.customField}>
-                        <span>Nachname des Patienten/der Patientin:</span>{errors.patientLastName && <span className={styles.error}>{errors.patientLastName}</span>}
-                        <input type="text" name="patientLastName" onChange={handleChange} required={true}/>
-                    </label>
-
+                        <label className={styles.customField}>
+                            {errors.patientLastName && <span className={styles.error}>{errors.patientLastName}</span>}
+                            <input type="text" placeholder="Nachname des Patienten/der Patientin" name="patientLastName" onChange={handleChange} required={true}/>
+                        </label>
+                    </div>
                     <label className={styles.customField}>
                         <span>Geburtsdatum:</span>{errors.birthdate && <span className={styles.error}>{errors.birthdate}</span>}
                         <input type="date" name="birthdate" onChange={handleChange} required={true}/>
                     </label>
 
                     <label className={styles.customField}>
-                        <span>AHV-Nr.:</span>{errors.AHV && <span className={styles.error}>{errors.AHV}</span>}
-                        <input type="text" name="AHV" onChange={handleChange} required={true}/>
+                        {errors.AHV && <span className={styles.error}>{errors.AHV}</span>}
+                        <input type="text" placeholder="AHV-Nummer" name="AHV" onChange={handleChange} required={true}/>
                     </label>
 
                     <label className={styles.customField}>
-                        <span>Mehrfachrezept:</span>{errors.numberOfUses && <span className={styles.error}>{errors.numberOfUses}</span>}
-                        <input type="number" name="numberOfUses" onChange={handleChange}/>
+                        {errors.numberOfUses && <span className={styles.error}>{errors.numberOfUses}</span>}
+                        <input type="number" placeholder="Mehrfachrezept" name="numberOfUses" onChange={handleChange}/>
                     </label>
                 </fieldset>
 
                 {serviceList.map((singleService, index) => (
                     <fieldset key={index} className={styles.inputGroup}>
                         <label className={styles.customField}>
-                            <span>ATC-Nr.:</span>{errors.drugPrescriptions && <span className={styles.error}>{errors.drugPrescriptions[index]}</span>}
-                            <input name="atcCode" type="text" id="service" value={singleService.service}
+                            {errors.drugPrescriptions && <span className={styles.error}>{errors.drugPrescriptions[index]}</span>}
+                            <input name="atcCode" placeholder="ATC-Nummer" type="text" id="service" value={singleService.service}
                                    onChange={(e) => handleServiceChange(e, index)} required />
                         </label>
-                        <div>
+                        <div className={styles.schedules}>
                             <label className={styles.scheduleCheckbox}>
                                 <span>Morgens:</span>
                                 <input type="checkbox" name="morning" onChange={e => handleScheduleChange(e, index)}/>
@@ -287,11 +292,13 @@ export default function form() {
 
                     </fieldset>))}
 
-                <input type={"button"} value={"Add Form"} onClick={handleServiceAdd}/>
-                <input type={"button"} value={"Remove Form"} onClick={handleServiceRemove}/>
+                <div>
+                    <input type={"button"} value={"Medikament Hinzufügen"} className={styles.drugButton} onClick={handleServiceAdd}/>
+                    <input type={"button"} value={"Medikament Entfernen"} className={styles.drugButton} onClick={handleServiceRemove}/>
+                </div>
 
-                <button disabled={isLoading}>
-                    {isLoading ? "...Loading" : "Submit"}
+                <button disabled={isLoading} className={styles.submitButton}>
+                    {isLoading ? "Lädt..." : "Senden"}
                 </button>
 
             </form>

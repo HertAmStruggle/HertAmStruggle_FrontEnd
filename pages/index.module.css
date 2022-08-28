@@ -27,7 +27,7 @@
     -webkit-appearance: none;
     -ms-appearance: none;
     -moz-appearance: none;
-    background: #eeeeee;
+    background: var(--turquoise20);
     transition: background 0.3s ease;
     padding: 12px;
     border-radius: 3px;
@@ -38,11 +38,12 @@
     flex: 1 1;
     font-size: 1em;
     font-family: 'Nunito', sans-serif;
+    margin-bottom: 15px;
 }
 
 
 .customField input:focus {
-    background: #e3e3e3;
+    background: var(--grey20);
 }
 
 .customField input::placeholder {
@@ -50,10 +51,62 @@
     transition: color 0.3s ease;
 }
 
+.twoInputs {
+    display:flex;
+    gap: 15px;
+    width: 100%;
+}
+
+.twoInputs label {
+    flex-basis: calc(50% - 7.5px);
+    flex-grow: 0;
+    flex-shrink: 0;
+}
+
 .customField input:focus::placeholder {
     color: transparent;
 }
+
+.schedules {
+    display: flex;
+    gap: 15px;
+}
+
+.scheduleCheckbox input, .scheduleInput input {
+    margin-left: 5px;
+}
+
 .error {
     color: red;
-    margin-left: 1em;
+    display: block;
+}
+
+.drugButton {
+    background-color: var(--grey70);
+    font-size: 1em;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+    cursor: pointer;
+    margin-right: 15px;
+    margin-bottom: 15px;
+}
+
+.drugButton:active {
+    background-color: var(--grey40);
+}
+
+.submitButton {
+    background-color: var(--turquoise);
+    font-size: 1em;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.submitButton:active {
+    background-color: var(--turquoise70);
 }

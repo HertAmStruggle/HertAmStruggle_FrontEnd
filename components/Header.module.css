@@ -5,7 +5,7 @@
     display: flex;
     justify-content: space-between;
     background-color: var(--grey20);
-    box-shadow: 0 0 5px var(--grey);
+    border-bottom: 1px solid var(--grey70);
     padding: 0.5rem 1rem 0.5rem 1rem;
     z-index: 99;
 }
